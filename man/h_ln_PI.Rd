@@ -2,18 +2,18 @@
 % Please edit documentation in R/DENSaftertransform.R
 \name{h_ln_PI}
 \alias{h_ln_PI}
-\title{Bandwidth for the PI estimator in the case of the logarithmic transformation.}
+\title{The bandwidth for the single-bandwidth PI density estimator in the case of the logarithmic transformation.}
 \usage{
 h_ln_PI(x)
 }
 \arguments{
-\item{x}{vector of the original X-data.}
+\item{x}{vector of the original positive x-data.}
 }
 \value{
-The bandwidth for the PI estimator for estimating \eqn{g}, the density after the logarithmic transformation, obtained by replacing \eqn{g} by the reference \eqn{N(\bar y,s_Y^2)} density.
+The bandwidth for the PI estimator for estimating \eqn{g}, the density after the logarithmic transformation.
 }
 \description{
-Bandwidth for the PI estimator for estimating \eqn{g}, the true probability density function (pdf), correponding to the logarithmic transformation of data based on replacing \eqn{g} by the reference \eqn{N(\bar y,s_Y^2)} distribution. See Section 7 of the article by Savchuk (2026).
+Bandwidth for the PI estimator for estimating \eqn{g}, the true pdf of the transformed sample.
 }
 \examples{
 # Example. Finding bandwidth for the PI estimator for the log-transformed sample of size n=100 
@@ -23,7 +23,7 @@ xdat=rgamma(100,2,scale=2)
 paste("PI bandwidth for the PI estimator=", h_ln_PI(xdat))
 }
 \references{
-Savchuk, O. (2026, under review). Density estimation for log-transformed data.
+Savchuk, O. (2026). Density estimation for log-transformed data. \emph{Computational Statistics}, 41(98).
 }
 \seealso{
 \code{\link{KDE_ln_PI}}.

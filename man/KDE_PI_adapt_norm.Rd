@@ -7,7 +7,7 @@
 KDE_PI_adapt_norm(x, u)
 }
 \arguments{
-\item{x}{vector of the original X-data,}
+\item{x}{vector of the original positive x-data,}
 
 \item{u}{vector of the estimation points.}
 }
@@ -21,7 +21,7 @@ Computing the adaptive normal PI kernel density estimate for the log-transformed
 #Example(skewed bimodal density). Estimating the density corresponding to the logarithmic 
 #transformation of a sample of size n=1000 originated from the skewed bimodal density 
 #(density #8 of Marron and Wand (1992)).
-#Density after the logarithmi transformation
+#Density after the logarithmic transformation
 g_skew=function(u)
   3/4*dnorm(u)+1/4*dnorm(u,mean=3/2,sd=1/3) 
 skew_realiz=function(n){
@@ -50,7 +50,7 @@ legend(-4.5,0.45,legend=c("PI estimate","Adaptive normal","density g"),lty=c("lo
 legend(1.25,0.45,legend=paste("n=",n),cex=2,bty="n")
 }
 \references{
-Savchuk, O. (2026, under review). Density estimation for log-transformed data.
+Savchuk, O. (2026). Density estimation for log-transformed data. \emph{Computational Statistics}, 41(98).
 }
 \seealso{
 \code{\link{KDE_ln_PI}}.

@@ -11,7 +11,7 @@ KDE_power_PI(alpha, h, x, u)
 
 \item{h}{the bandwidth, scalar,}
 
-\item{x}{vector of the original X-data,}
+\item{x}{vector of the original x-data,}
 
 \item{u}{vector of the estimation points.}
 }
@@ -22,7 +22,7 @@ Vector of density estimates at the corresponding values of the argument (u).
 Computing the PI kernel density estimate for data after a power transformation based on the Gaussian kernel.
 }
 \examples{
-#Example(original data is sandard normal, n=1000 and (1)alpha=0.5 (Case 1), (2) alpha=2 (Case 2))
+#Example(original data is standard normal, n=1000 and (1)alpha=0.5 (Case 1), (2) alpha=2 (Case 2))
 n=1000
 xdat=rnorm(n)
 h_P=bw.SJ(xdat) #Sheather-Jones PI for original x-data
@@ -55,8 +55,14 @@ lwd=c(2,2),cex=1.5,bty="n")
 legend(-1.5,5,legend=paste("n=",n),cex=2,bty="n")
 }
 \references{
-Savchuk, O., Schick A. (2013). Density estimation for power transformations. \emph{Journal of Nonparametric Statistics}, 25(3), 545-559.
+\enumerate{
+\item Savchuk, O. and Schick, A. (2013). Density estimation for power
+transformations. \emph{Journal of Nonparametric Statistics},
+25(3), 545--559. \doi{10.1080/10485252.2013.811788}
+\item Savchuk, O. (2026, submitted). Adaptive log-normal plug-in
+density estimator for power transformations.
+}
 }
 \seealso{
-\code{\link{KDE_ln_PI}}.
+\code{\link{KDE_ln_PI}}, \code{\link{h_pi_datadriven_power}}.
 }

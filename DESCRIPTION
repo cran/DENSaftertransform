@@ -1,16 +1,16 @@
 Package: DENSaftertransform
 Title: Estimating Density after Logarithmic or Power Transformation of
         Data
-Version: 0.1
+Version: 1.0
 Authors@R: 
-    person("Olga", "Savchuk", , "olga.y.savchuk@gmail.com", role = c("aut", "cre"))
-Description: Functions for computing: (1) the adaptive normal PI estimate for data after the logarithmic transformation; (2) single-bandwidth PI density estimate for data after the logarithmic transformation; (3) single bandwidth PI estimate for data after the power transformation. See the articles: (1) Savchuk, O. (2026, under review). Density estimation for log-transformed data; (2) Savchuk, O., Schick A. (2013). Density estimation for power transformations. Journal of Nonparametric Statistics, 25(3), 545-559 <doi:10.1080/10485252.2013.811788>.
+    person("Olga", "Savchuk", , "olga.y.savchuk@gmail.com", role = c("aut", "cre", "cph"))
+Maintainer: Olga Savchuk <olga.y.savchuk@gmail.com>
+Description: Functions for computing: (1) the adaptive normal plug-in(PI) density estimate for data after the logarithmic transformation; (2) the adaptive log-normal PI density estimate for data after the power transformation with an exponent ranging from zero to one; (3) the single-bandwidth PI density estimate for data after the logarithmic transformation; (4) the single-bandwidth PI density estimate for data after the power transformation; (5) the data-driven bandwidth for the single-bandwidth PI estimator for data after the logarithmic transformation; (6) the rule-of-thumb bandwidth for the single-bandwidth PI estimator for data after the power transformation. For details, see the articles: (1) Savchuk, O. (2026) (submitted). Adaptive log-normal plug-in density estimator for power transformations. (2) Savchuk, O. (2026). Density estimation for log-transformed data. Computational Statistics, 41(98) <doi:10.1007/s00180-026-01766-y>. (3) Savchuk, O., Schick A. (2013). Density estimation for power transformations. Journal of Nonparametric Statistics, 25(3), 545-559 <doi:10.1080/10485252.2013.811788>.
 License: GPL-2
 Encoding: UTF-8
-RoxygenNote: 8.0.0
+Config/roxygen2/version: 8.1.1
 NeedsCompilation: no
-Packaged: 2026-05-29 12:41:48 UTC; olgay
-Author: Olga Savchuk [aut, cre]
-Maintainer: Olga Savchuk <olga.y.savchuk@gmail.com>
+Packaged: 2026-10-19 00:43:16 UTC; olgay
+Author: Olga Savchuk [aut, cre, cph]
 Repository: CRAN
-Date/Publication: 2026-06-02 09:40:07 UTC
+Date/Publication: 2026-10-19 02:30:15 UTC

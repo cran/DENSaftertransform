@@ -2,14 +2,14 @@
 % Please edit documentation in R/DENSaftertransform.R
 \name{KDE_ln_PI}
 \alias{KDE_ln_PI}
-\title{The PI kernel density estimate in the case of the logaritjmic transformation.}
+\title{The PI kernel density estimate in the case of the logarithmic transformation.}
 \usage{
 KDE_ln_PI(h, x, u)
 }
 \arguments{
 \item{h}{the bandwidth, scalar,}
 
-\item{x}{vector of the original X-data,}
+\item{x}{vector of the original positive x-data,}
 
 \item{u}{vector of the estimation points.}
 }
@@ -38,7 +38,7 @@ text(3.25,0.525,paste("n=",n),cex=2)
 text(3.85,0.425,bquote(h[PI] == .(sprintf("\%.4f", h_PI))),cex=2)
 }
 \references{
-Savchuk, O. (2026, under review). Density estimation for log-transformed data.
+Savchuk, O. (2026). Density estimation for log-transformed data. \emph{Computational Statistics}, 41(98).
 }
 \seealso{
 \code{\link{h_ln_PI}}.

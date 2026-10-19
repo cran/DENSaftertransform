@@ -1,10 +1,10 @@
-#' Bandwidth for the PI estimator in the case of the logarithmic transformation.
+#' The bandwidth for the single-bandwidth PI density estimator in the case of the logarithmic transformation.
 #'
-#' Bandwidth for the PI estimator for estimating \eqn{g}, the true probability density function (pdf), correponding to the logarithmic transformation of data based on replacing \eqn{g} by the reference \eqn{N(\bar y,s_Y^2)} distribution. See Section 7 of the article by Savchuk (2026).
+#' Bandwidth for the PI estimator for estimating \eqn{g}, the true pdf of the transformed sample.
 #'
-#' @param x vector of the original X-data.
-#' @return The bandwidth for the PI estimator for estimating \eqn{g}, the density after the logarithmic transformation, obtained by replacing \eqn{g} by the reference \eqn{N(\bar y,s_Y^2)} density.
-#' @references Savchuk, O. (2026, under review). Density estimation for log-transformed data.
+#' @param x vector of the original positive x-data.
+#' @return The bandwidth for the PI estimator for estimating \eqn{g}, the density after the logarithmic transformation.
+#' @references Savchuk, O. (2026). Density estimation for log-transformed data. \emph{Computational Statistics}, 41(98).
 #' @seealso \code{\link{KDE_ln_PI}}.
 #' @examples
 #' # Example. Finding bandwidth for the PI estimator for the log-transformed sample of size n=100 
@@ -16,7 +16,9 @@
 #' @importFrom stats sd
 h_ln_PI=function(x){
   #PI bandwidth for KDE_ln_PI based on the normal reference rule for g (see Section 7 of the article)
-  #x is a vector of the original X-data
+  #x is a vector of the original positive x-data
+   if (any(x<=0,na.rm=TRUE))
+    stop("All values in 'x' must be positive.")
   n=length(x)
   y=log(x)
   mu_Y=mean(y)
@@ -25,15 +27,15 @@ h_ln_PI=function(x){
 }
 
 
-#' The PI kernel density estimate in the case of the logaritjmic transformation.
+#' The PI kernel density estimate in the case of the logarithmic transformation.
 #'
 #' Computing the PI kernel density estimate for the log-transformed data based on the Gaussian kernel.
 #'
 #' @param h the bandwidth, scalar,
-#' @param x vector of the original X-data,
+#' @param x vector of the original positive x-data,
 #' @param u vector of the estimation points.
 #' @return Vector of density estimates at the corresponding values of the argument (u). 
-#' @references Savchuk, O. (2026, under review). Density estimation for log-transformed data.
+#' @references Savchuk, O. (2026). Density estimation for log-transformed data. \emph{Computational Statistics}, 41(98).
 #' @seealso \code{\link{h_ln_PI}}.
 #' @examples
 #' #Example(Gamma(shape=2,scale=2) density). Estimating the pdf of the density corresponding to the
@@ -57,9 +59,11 @@ h_ln_PI=function(x){
 #' @importFrom "graphics" "plot" "title"
 #' @importFrom stats dnorm
 KDE_ln_PI=function(h,x,u){    #Plug-in estimator in the case of the logarithmic transformation
-  #x is a vertor of the original X-data
+  # x is a vector of the original positive x-data
   # h is the bandwidth(scalar)
   # u is the vector of values where we compute our density estimate
+   if (any(x<=0,na.rm=TRUE))
+    stop("All values in 'x' must be positive.")
   n=length(x)
   arg=(matrix(exp(u),length(u),1)%*%matrix(1,1,n)-matrix(1,length(u),1)%*%matrix(x,1,n))/h
   (as.numeric(dnorm(arg)%*%matrix(1,n,1)/(n*h)))*exp(u)
@@ -69,16 +73,16 @@ KDE_ln_PI=function(h,x,u){    #Plug-in estimator in the case of the logarithmic 
 #'
 #' Computing the adaptive normal PI kernel density estimate for the log-transformed data based on the Gaussian kernel.
 #'
-#' @param x vector of the original X-data,
+#' @param x vector of the original positive x-data,
 #' @param u vector of the estimation points.
 #' @return Vector of density estimates at the corresponding values of the argument (u). 
-#' @references Savchuk, O. (2026, under review). Density estimation for log-transformed data.
+#' @references Savchuk, O. (2026). Density estimation for log-transformed data. \emph{Computational Statistics}, 41(98).
 #' @seealso \code{\link{KDE_ln_PI}}.
 #' @examples
 #' #Example(skewed bimodal density). Estimating the density corresponding to the logarithmic 
 #' #transformation of a sample of size n=1000 originated from the skewed bimodal density 
 #' #(density #8 of Marron and Wand (1992)).
-#' #Density after the logarithmi transformation
+#' #Density after the logarithmic transformation
 #' g_skew=function(u)
 #'   3/4*dnorm(u)+1/4*dnorm(u,mean=3/2,sd=1/3) 
 #' skew_realiz=function(n){
@@ -110,8 +114,10 @@ KDE_ln_PI=function(h,x,u){    #Plug-in estimator in the case of the logarithmic 
 #' @importFrom "graphics" "plot" "title"
 #' @importFrom stats dnorm quantile sd
 KDE_PI_adapt_norm=function(x,u){    #PI estimator in the case of the ln transformation based on the PI reference bandwidth based on the N(mu_Y,sigma_Y^2) distribution used for g
-  #x is a vertor of the original data
+  #x is a vector of the original posive data
   # u is the vector of values where we compute our density estimate
+  if (any(x<=0,na.rm=TRUE))
+    stop("All values in 'x' must be positive.")
   n=length(x)
   l=length(u)
   y=log(x)
@@ -145,13 +151,20 @@ KDE_PI_adapt_norm=function(x,u){    #PI estimator in the case of the ln transfor
 #'
 #' @param alpha the exponent of the power transformation (alpha>0),
 #' @param h the bandwidth, scalar,
-#' @param x vector of the original X-data,
+#' @param x vector of the original x-data,
 #' @param u vector of the estimation points.
 #' @return Vector of density estimates at the corresponding values of the argument (u). 
-#' @references Savchuk, O., Schick A. (2013). Density estimation for power transformations. \emph{Journal of Nonparametric Statistics}, 25(3), 545-559.
-#' @seealso \code{\link{KDE_ln_PI}}.
+#' @references
+#' \enumerate{
+#'   \item Savchuk, O. and Schick, A. (2013). Density estimation for power
+#'     transformations. \emph{Journal of Nonparametric Statistics},
+#'     25(3), 545--559. \doi{10.1080/10485252.2013.811788}
+#'   \item Savchuk, O. (2026, submitted). Adaptive log-normal plug-in
+#'     density estimator for power transformations.
+#' }
+#' @seealso \code{\link{KDE_ln_PI}}, \code{\link{h_pi_datadriven_power}}.
 #' @examples
-#' #Example(original data is sandard normal, n=1000 and (1)alpha=0.5 (Case 1), (2) alpha=2 (Case 2))
+#' #Example(original data is standard normal, n=1000 and (1)alpha=0.5 (Case 1), (2) alpha=2 (Case 2))
 #' n=1000
 #' xdat=rnorm(n)
 #' h_P=bw.SJ(xdat) #Sheather-Jones PI for original x-data
@@ -187,12 +200,140 @@ KDE_PI_adapt_norm=function(x,u){    #PI estimator in the case of the ln transfor
 #' @importFrom "graphics" "plot" "title"
 #' @importFrom stats dnorm
 KDE_power_PI=function(alpha,h,x,u){
-    # alpha is the exponent of the power transformation
+    # alpha is the exponent of the power transformation (alpha>0)
     # h is the bandwidth(scalar)
-    # x is a vertor of the original X-data
+    # x is a vector of the original x-data
     # u is the vector of values where we compute the density estimate
+	if(alpha<=0)
+      stop("'alpha' must be positive.")
     n=length(x)
     arg=(matrix((sign(u)*abs(u)^(1/alpha)),length(u),1)%*%matrix(1,1,n)-matrix(1,length(u),1)%*%matrix(x,1,n))/h
     vec=dnorm(arg)%*%matrix(1,n,1)
-    as.numeric(diag(abs(u)^(1/alpha-1))%*%vec/(n*h*alpha))
+    as.numeric(diag(abs(u)^(1/alpha-1),nrow=length(u))%*%vec/(n*h*alpha))
+}
+
+#' Adaptive log-normal plug-in density estimator for power transformations.
+#'
+#' Computing the adaptive log-normal PI kernel density estimate for nonnegative data after a power transformation 
+#' with exponent ranging from 0 to 1 based on the Gaussian kernel.
+#'
+#' @param x vector of the original positive x-data,
+#' @param alpha the exponent of the power transformation (0<alpha<1),
+#' @param u vector of nonnegative estimation points.
+#' @return Vector of density estimates at the corresponding values of the argument (u). 
+#' @references Savchuk, O. (2026, submitted). Adaptive log-normal plug-in density estimator for power transformations.
+#' @seealso \code{\link{KDE_power_PI}}.
+#' @examples
+#' #Example (standard exponential density, n=1000, alpha=1/5)
+#' # Plotting the true density g of Y = X^alpha, where X ~ Exp(1) (black)
+#' # together with the adaptive PI estimate(blue) and the
+#' # single-bandwidth PI estimate(olive).
+#' n=1000
+#' alpha=1/5
+#' u=seq(0.001,2,len=1000) #estimation points
+#' x_exp=rexp(n)
+#' h_PI_exp=h_pi_datadriven_power(x_exp,alpha)
+#' #true density after the power transformation of the standard exponential distribution
+#' g_exp=u^(1/alpha-1)*exp(-u^(1/alpha))/alpha  #true density after the power transformation
+#' KDE_exp_adapt_PI=KDE_PI_adapt_lognorm_power(x_exp,alpha,u)
+#' KDE_exp_PI=KDE_power_PI(alpha,h_PI_exp,x_exp,u)
+#' dev.new()
+#' plot(u,g_exp,'l',lwd=2,col="black",xlab="y",ylab="density",cex.lab=1.7,cex.axis=1.7,cex.main=1.7,
+#' main="Standard exponential distribution",ylim=c(0,1.25*max(KDE_exp_adapt_PI)))
+#' lines(u,KDE_exp_adapt_PI,lty="solid",lwd=2,col="blue")
+#' lines(u,KDE_exp_PI,lty="dashed",lwd=2,col="forestgreen")
+#' legend("topleft", legend = c("Adaptive PI estimate", "PI estimate", "density g"),
+#' lty=c("solid","dashed","solid"), col=c("blue","forestgreen","black"),lwd=2,bty="n",cex=1.7)
+#' legend("topright",legend=expression(n==1000,alpha==frac(1,5)),cex=1.7,bty="n",y.intersp=1.3)
+#' @export
+#' @importFrom "grDevices" "dev.new"
+#' @importFrom "graphics" "plot" "title"
+#' @importFrom stats dnorm quantile sd
+KDE_PI_adapt_lognorm_power=function(x,alpha,u){    #PI estimator in the case of the power transformation based on the PI reference bandwidth based on the log-normal distribution with the parameters estimated from the y-data
+  # x is a vector of the original positive data
+  # alpha is the power of the transformation (0<alpha<1)
+  # u is the vector of values where the adaptive density estimate is computed
+  if (any(x<=0,na.rm=TRUE))
+    stop("All values in 'x' must be positive.")
+  if (alpha<=0||alpha>=1)
+    stop("'alpha' must satisfy 0<alpha<1.")
+  if (any(u<0,na.rm=TRUE))
+    stop("All values in 'u' must be nonnegative.")
+  n=length(x)
+  l=length(u)
+  y=x^alpha    #y-data
+  Y999=quantile(y,probs=0.999)[[1]] #99.9-th percentile of the y-data
+  Y001=quantile(y,probs=0.001)[[1]] #0.1-th percentile of the y-data
+  u_new=pmax(pmin(u,Y999),Y001)
+  mu_g_est=mean(log(y))
+  sigma_g_est=sqrt(mean((log(y)-mu_g_est)^2))
+  w1and2=c((-3-sqrt(1+4*alpha^2/sigma_g_est^2))/(2*alpha),(-3+sqrt(1+4*alpha^2/sigma_g_est^2))/(2*alpha))
+  u1and2=exp(mu_g_est+sigma_g_est^2*w1and2)
+  step=(Y999-Y001)/50
+  u11=max((u1and2[1]-step),min(u))
+  u12=(u1and2[1]+step)
+  u21=max((u1and2[2]-step),min(u))
+  u22=(u1and2[2]+step)
+  
+  B_f_true=function(v){
+    g_est=exp(-(log(v)-mu_g_est)^2/(2*sigma_g_est^2))/(v*sigma_g_est*sqrt(2*pi))
+	w=(log(v)-mu_g_est)/(sigma_g_est^2)
+    D=alpha^2*w^2+3*alpha*w+2-alpha^2/(sigma_g_est^2)
+    v^(1/alpha-1/5)/((alpha^(1/5))*(g_est^(1/5))*(abs(D)^(2/5)))
+  }
+  
+  func=ifelse(u_new<u11,B_f_true(u_new),
+         ifelse(((u_new>=u11)&(u_new<=u12)),(B_f_true(u11)+(B_f_true(u12)-B_f_true(u11))*(u_new-u11)/(u12 - u11)),
+		   ifelse(((u_new>u12)&(u_new<u21)),B_f_true(u_new),
+		     ifelse(((u_new>=u21)&(u_new<=u22)),(B_f_true(u21)+(B_f_true(u22)-B_f_true(u21))*(u_new-u21)/(u22-u21)),B_f_true(u_new)))))
+  
+  band=((2*sqrt(pi))^(-1/5))*func*(n^(-1/5))   #array of bandwidths
+  C=matrix(band,l,1)%*%matrix(1,1,n)  #matrix of bandwidths
+  arg=(matrix(u^(1/alpha),l,1)%*%matrix(1,1,n)-matrix(1,l,1)%*%matrix(x,1,n))/C
+  (as.numeric(dnorm(arg)%*%matrix(1,n,1)))*(u^(1/alpha-1))/(n*band*alpha) #array of size l
+}
+
+#' The bandwidth for the single-bandwidth PI density estimator for data after the power transformation with an exponent ranging from zero to one based on the Gaussian kernel.
+#'
+#' Bandwidth for the PI estimator for estimating \eqn{g}, the true pdf of the transformed sample.
+#'
+#' @param x vector of the original nonnegative-valued x-data.
+#' @param alpha exponent of the power transformation (ranges between 0 and 1).
+#' @return The bandwidth for the PI density estimator for estimating \eqn{g}, the density after the power transformation.
+#' @references Savchuk, O. (2026, submitted). Adaptive log-normal plug-in density estimator for power transformations.
+#' @seealso \code{\link{KDE_power_PI}}, \code{\link{KDE_PI_adapt_lognorm_power}}.
+#' @seealso \code{\link{KDE_power_PI}}, \code{\link{KDE_PI_adapt_lognorm_power}}.
+#' @examples
+#' # Example. Finding bandwidth for the single-bandwidth PI density estimator for the transformed 
+#' # data on river lengths of 141 major North American rivers with alpha=1/5.
+#' xdat=rivers
+#' alpha=1/5
+#' n=length(xdat)
+#' h_PI_power=h_pi_datadriven_power(xdat,alpha)
+#' u=seq(2,5.5,len=1000) #estimation points
+#' dens_PI=KDE_power_PI(alpha,h_PI_power,xdat,u)
+#' dens_TD=density(xdat^alpha,bw="ucv",from=2,to=5.5,n=1000)
+#' dev.new()
+#' oldpar=par(mar=c(6.5, 5, 2, 2))
+#' plot(u,dens_PI,'l',lwd=2,xlab=expression(length^{frac(1,5)}),ylab="density",cex.lab=1.7,
+#' cex.axis=1.7)
+#' lines(dens_TD,lwd=2,col="red")
+#' legend("topright",legend=as.expression(c(bquote(n==.(n)),bquote(alpha==frac(1,5)),
+#' bquote(h[PI]==.(round(h_PI_power,2))),bquote(h[CV]==.(round(dens_TD$bw,2))))),
+#' col=c(NA,NA,"black","red"),lwd=c(NA,NA,2,2),cex=1.7,bty="n",y.intersp=1.2)
+#' legend("topleft",legend=c("PI","TD"),lwd=c(2,2),col=c("black","red"),bty="n",cex=1.7)
+#' title("Density of river lengths",cex=1.5)
+#' par(oldpar)
+#' @export
+h_pi_datadriven_power=function(x,alpha){
+  stopifnot(all(x>0))
+  if(alpha<=0||alpha>=1)
+    stop("'alpha' must satisfy 0 < alpha < 1.")
+  n=length(x)
+  mu_fhat=mean(log(x))
+  sigma_fhat=sqrt(mean((log(x)-mu_fhat)^2))
+  num=(2^(4/5))*sigma_fhat*exp(mu_fhat+(sigma_fhat^2)*(alpha^2-12*alpha-14)/20)
+  denom=(12+(alpha^2)*((alpha+2)^2)*(sigma_fhat^4)+4*(alpha^2+2*alpha+2)*(sigma_fhat^2))^(1/5)
+  h_pi=num/denom*(n^(-1/5))
+  return(h_pi)
 }
